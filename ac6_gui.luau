@@ -3,6 +3,28 @@ local S = setmetatable({}, {__index = function(self, index) return game:GetServi
 local ScreenGui
 local Frame
 
+local BindableFunction = Instance.new("BindableFunction")
+BindableFunction.Name = "BindableFunction"
+BindableFunction.OnInvoke = function()
+	if not setclipboard then
+		S.StarterGui:SetCore("SendNotification", {
+			Title = "Notification",
+			Text = "Could not copy the Discord link because you don\'t have \'setclipboard\' on your exploit.",
+			Button1 = "Okay",
+		})
+		return
+	end
+	return setclipboard("https://discord.gg/yxBRdKkNVJ")
+end
+
+S.StarterGui:SetCore("SendNotification", {
+	Title = "Notification",
+	Text = "Would you like to copy my Discord server link?",
+	Button1 = "Yes",
+	Button2 = "No",
+	Callback = BindableFunction,
+})
+
 if S.RunService:IsStudio() then
 	ScreenGui = script:FindFirstAncestorWhichIsA("ScreenGui")
 	pcall(function() ScreenGui.Parent = S.CoreGui end)
