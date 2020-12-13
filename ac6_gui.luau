@@ -162,9 +162,11 @@ end
 local function TeleportVehicle(Position)
 	-- \\ Will only accept Vector3 because many vehicles don't have a PrimaryPart.
 	-- \\ Feel free to use this. ~ shawnjbragdon
-	LocalPlayer.Character.Parent = CurrentVehicle
-	CurrentVehicle:MoveTo(Position)
-	LocalPlayer.Character.Parent = workspace
+	if LocalPlayer.Character.Humanoid.SeatPart:IsDescendantOf(CurrentVehicle) then
+		LocalPlayer.Character.Parent = CurrentVehicle
+		CurrentVehicle:MoveTo(Position)
+		LocalPlayer.Character.Parent = workspace
+	end
 end
 
 local function GetKeyCode(inf)
