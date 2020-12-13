@@ -162,7 +162,7 @@ end
 local function TeleportVehicle(Position)
 	-- \\ Will only accept Vector3 because many vehicles don't have a PrimaryPart.
 	-- \\ Feel free to use this. ~ shawnjbragdon
-	if LocalPlayer.Character.Humanoid.SeatPart:IsDescendantOf(CurrentVehicle) then
+	if LocalPlayer.Character.Humanoid.SeatPart:IsDescendantOf(CurrentVehicle) and GetWheelVelocity() ~= nil then
 		LocalPlayer.Character.Parent = CurrentVehicle
 		CurrentVehicle:MoveTo(Position)
 		LocalPlayer.Character.Parent = workspace
