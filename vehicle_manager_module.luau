@@ -105,7 +105,7 @@ local VehicleManager = setmetatable({
 			if (Start - SeatPart.Position).Magnitude > Distance then
 				MoveVehicle(Player, Start)
 			end
-			Vehicle:SetPrimaryPartCFrame(LookAt(Finish, SeatPart.Position) * CFrame.Angles(0, math.rad(180), 0))
+			Vehicle:SetPrimaryPartCFrame(LookAt(Finish * 2, SeatPart.Position) * CFrame.Angles(0, math.rad(180), 0))
 			if MaximumSpeed ~= nil then
 				local MPH = ((10/12) * (60/88)) * SeatPart.Velocity.Magnitude
 				if (SeatPart.Velocity.Magnitude * Vector3.new(1, 0, 1)) < MPH then
