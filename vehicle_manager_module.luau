@@ -9,8 +9,16 @@ local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
 local VirtualInputManager = game:GetService("VirtualInputManager")
+local StarterGui = game:GetService("StarterGui")
 
 local Autofarm = false
+
+StarterGui:SetCore("SendNotification", {
+	Title = "Notification",
+	Text = "When using the autofarm, make sure your vehicle is in Drive or any gears following.",
+	Duration = 30,
+	Button1 = "Okay",
+})
 
 local function GetVehicle(Player)
 	local Character = Player.Character
@@ -112,11 +120,7 @@ local VehicleManager = setmetatable({
 			elseif MPH > 350 then
 				return
 			end
-			for index, value in pairs(Vehicle.Wheels:GetDescendants()) do
-				pcall(function()
-					value.Velocity = value.Velocity * Vector3.new(DirectionVector.X * 1.2, DirectionVector.Y * 1, DirectionVector.Z * 1.2)
-				end)
-			end
+			VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
 		end)
 		return true, "Successful."
 	end,
