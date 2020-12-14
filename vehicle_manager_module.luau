@@ -104,7 +104,7 @@ local VehicleManager = setmetatable({
 		end
 		pcall(function() Connection:Disconnect() end)
 		Autofarm = true
-		MoveVehicle(Player, Start)
+		MoveVehicle(Player, CFrame.new(Start, DirectionVector))
 		Connection = RunService.Stepped:Connect(function()
 			if not Autofarm then
 				Connection:Disconnect()
@@ -114,7 +114,7 @@ local VehicleManager = setmetatable({
 				MoveVehicle(Player, Start)
 			end
 			Vehicle:SetPrimaryPartCFrame(LookAt(Finish * Vector3.new(Finish.X * 2, 0, Finish.Z * 2), SeatPart.Position) * CFrame.Angles(0, math.rad(180), 0))
-			local MPH = ((10/12) * (60/88)) * SeatPart.Velocity.Magnitude
+			local MPH = (((10/12) * (60/88)) * SeatPart.Velocity.Magnitude)
 			if MaximumSpeed ~= nil and MPH > MaximumSpeed then
 				return
 			elseif MPH > 350 then
