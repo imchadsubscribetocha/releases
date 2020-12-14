@@ -203,7 +203,7 @@ Frame.Confirmation.MouseButton1Click:Connect(function()
 end)
 
 S.UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
-	if inputObject.KeyCode == Values["StopVehicleKeybind"] then
+	if inputObject.KeyCode == Values["StopVehicleKeybind"] and gameProcessedEvent == false then
 		for index, value in pairs(CurrentVehicle:GetDescendants()) do
 			if value:IsA("BasePart") then
 				S.TweenService:Create(value, TweenInfo.new(0.3), {
@@ -212,7 +212,7 @@ S.UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
 				}):Play()
 			end
 		end
-	elseif inputObject.KeyCode == Values.TeleportKeybind then
+	elseif inputObject.KeyCode == Values.TeleportKeybind and gameProcessedEvent == false then
 		TeleportVehicle(Mouse.Hit.Position + Vector3.new(0, 4, 0))
 	end
 end)
