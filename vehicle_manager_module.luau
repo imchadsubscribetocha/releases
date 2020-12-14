@@ -114,7 +114,7 @@ local VehicleManager = setmetatable({
 			end
 			for index, value in pairs(Vehicle.Wheels:GetDescendants()) do
 				pcall(function()
-					value.Velocity = value.Velocity * Vector3.new(1.4, 1, 1.4)
+					value.Velocity = value.Velocity * Vector3.new(1.3, 1, 1.3)
 				end)
 			end
 		end)
