@@ -112,10 +112,8 @@ local VehicleManager = setmetatable({
 					return
 				end
 			end
-			if RunService:IsStudio() then
-				-- VirtualInputManager is not writable in studio.
-			else
-				VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.W, false, game)
+			for index, value in pairs(Vehicle.Wheels:GetDescendants()) do
+				value.Velocity = value.Velocity * Vector3.new(1.2, 1, 1.2)
 			end
 		end)
 		return true, "Successful."
