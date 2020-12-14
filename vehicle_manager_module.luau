@@ -54,14 +54,7 @@ local function MoveVehicle(Player, Position)
 	return true, "Successful."
 end
 
-local function LookAt(target, eye)
-	local forwardVector = (eye - target).Unit
-	local upVector = Vector3.new(0, 1, 0)
-	local rightVector = forwardVector:Cross(upVector)
-	local upVector2 = rightVector:Cross(forwardVector)
 
-	return CFrame.fromMatrix(eye, rightVector, upVector2)
-end
 
 local VehicleManager = setmetatable({
 	GetPlayerVehicle = function(self, Player)
@@ -92,28 +85,20 @@ local VehicleManager = setmetatable({
 		
 		return true, string.format("%s is driving.", Player.Name)
 	end,
-	LaunchAutofarm = function(self, Start, Finish, CustomDirectionVector, MaximumSpeed)
+	LaunchAutofarm = function(self, MaximumSpeed)
 		local Player = Players.LocalPlayer
 		local Character = Player.Character
 		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
 		local Vehicle, SeatPart = GetVehicle(Player)
-		local DirectionVector = (Start - Finish).Unit
-		local Distance = (Start - Finish).Magnitude
-		if CustomDirectionVector ~= nil and typeof(CustomDirectionVector) == "Vector3" then
-			DirectionVector = CustomDirectionVector
-		end
+		local Coordinate = SeatPart.Position
 		pcall(function() Connection:Disconnect() end)
 		Autofarm = true
-		MoveVehicle(Player, CFrame.new(Start, DirectionVector))
 		Connection = RunService.Stepped:Connect(function()
 			if not Autofarm then
 				Connection:Disconnect()
 				return
 			end
-			if (Start - SeatPart.Position).Magnitude > Distance then
-				MoveVehicle(Player, Start)
-			end
-			Vehicle:SetPrimaryPartCFrame(LookAt(Finish * Vector3.new(Finish.X * 2, 0, Finish.Z * 2), SeatPart.Position) * CFrame.Angles(0, math.rad(180), 0))
+			Vehicle:SetPrimaryPartCFrame(CFrame.new(Coordinate))
 			local MPH = (((10/12) * (60/88)) * SeatPart.Velocity.Magnitude)
 			if MaximumSpeed ~= nil and MPH > MaximumSpeed then
 				return
