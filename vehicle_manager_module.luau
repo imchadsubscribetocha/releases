@@ -107,9 +107,9 @@ local VehicleManager = setmetatable({
 			end
 			Vehicle:SetPrimaryPartCFrame(LookAt(Finish * Vector3.new(Finish.X * 2, 0, Finish.Z * 2), SeatPart.Position) * CFrame.Angles(0, math.rad(180), 0))
 			local MPH = ((10/12) * (60/88)) * SeatPart.Velocity.Magnitude
-			if MaximumSpeed ~= nil and (SeatPart.Velocity * Vector3.new(1, 0, 1)).Magnitude < MPH then
+			if MaximumSpeed ~= nil and (SeatPart.Velocity * Vector3.new(1, 0, 1)).Magnitude > MPH then
 				return
-			elseif (SeatPart.Velocity * Vector3.new(1, 0, 1)).Magnitude < 350 then
+			elseif (SeatPart.Velocity * Vector3.new(1, 0, 1)).Magnitude > 350 then
 				return
 			end
 			for index, value in pairs(Vehicle.Wheels:GetDescendants()) do
