@@ -1,0 +1,330 @@
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+--[[
+	This script was created by shawnjbragdon#0001.
+	If you are going to re-release this, please leave the credit.
+	
+	https://v3rmillion.net/member.php?action=profile&uid=1870134
+	https://forum.robloxscripts.com/user-shawnjbragdon
+	
+	This script was made using Synapse X.
+]]
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local StarterPlayer = game:GetService("StarterPlayer")
+local TestService = game:GetService("TestService")
+local VirtualUser = game:GetService("VirtualUser")
+local UserInputService = game:GetService("UserInputService")
+local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))()
+local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))()
+local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local r = 255
+local g = 0
+local b = 0
+
+coroutine.resume(coroutine.create(function()
+	while true do
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			r = r - 1
+			g = g + 1
+		end
+		r = 0
+		g = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			g = g - 1
+			b = b + 1
+		end
+		g = 0
+		b = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			b = b - 1
+			r = r + 1
+		end
+		b = 0
+		r = 255
+	end
+end))
+
+local __applyCustom = function(GuiObject)
+	coroutine.resume(coroutine.create(function()
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChild("Underline")
+		local TextLabel = GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		local Underline = GuiObject["object"]:FindFirstChild("Underline")
+		while true do
+			RunService.Stepped:Wait()
+			TextLabel.Font = Enum.Font.Michroma
+			TextLabel.TextColor3 = Color3.new(r / 255, g / 255, b / 255)
+			TextLabel.TextStrokeColor3 = Color3.new(r / 510, g / 510, b / 510)
+			TextLabel.TextStrokeTransparency = 0.5
+			Underline.BackgroundColor3 = Color3.new(r / 255, g / 255, b / 255)
+		end
+	end))
+end
+
+default = {
+	topcolor       = Color3.fromRGB(30, 30, 30);
+	titlecolor     = Color3.fromRGB(255, 255, 255);
+
+	underlinecolor = Color3.fromRGB(255, 0, 0);
+	bgcolor        = Color3.fromRGB(35, 35, 35);
+	boxcolor       = Color3.fromRGB(35, 35, 35);
+	btncolor       = Color3.fromRGB(25, 25, 25);
+	dropcolor      = Color3.fromRGB(25, 25, 25);
+	sectncolor     = Color3.fromRGB(25, 25, 25);
+	bordercolor    = Color3.fromRGB(60, 60, 60);
+
+	font           = Enum.Font.Jura;
+	titlefont      = Enum.Font.Michroma;
+
+	fontsize       = 17;
+	titlesize      = 18;
+
+	textstroke     = 1;
+	titlestroke    = 1;
+
+	strokecolor    = Color3.fromRGB(0, 0, 0);
+
+	textcolor      = Color3.fromRGB(255, 255, 255);
+	titletextcolor = Color3.fromRGB(255, 255, 255);
+
+	placeholdercolor = Color3.fromRGB(255, 255, 255);
+	titlestrokecolor = Color3.fromRGB(0, 0, 0);
+}
+
+WallyLibraryV2["options"] = setmetatable({}, {__index = default})
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+if not RunService:IsStudio() then
+	local game_rawmetatable = getrawmetatable(game)
+	local prior_namecall = game_rawmetatable.__namecall
+
+	setreadonly(game_rawmetatable, false)
+
+	game_rawmetatable.__namecall = newcclosure(function(self, ...)
+		local arguments = {...}
+		local namecallmethod = getnamecallmethod()
+
+		if not checkcaller() then
+			if self == workspace then
+				if namecallmethod == "FindPartOnRayWithWhitelist" then
+					if typeof(arguments[1]) == "Ray" and typeof(arguments[2]) == "table" then
+						if arguments[2][1] == workspace.Terrain then
+							return nil, Vector3.new(0, 1e6, 0)
+						end
+					end
+				end
+			end
+		end
+
+		return prior_namecall(self, ...)
+	end)
+
+	setreadonly(game_rawmetatable, true)
+end
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = (RunService:IsStudio() and LocalPlayer:FindFirstChildWhichIsA("PlayerGui")) or game:GetService("CoreGui")
+local PlayerMouse = LocalPlayer:GetMouse()
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+spawn(function()
+	while not game:IsLoaded() do wait(1) end
+	
+	StarterGui:SetCore("SendNotification", {
+		["Title"] = "Thank you for using.",
+		["Text"] = "This script was created by shawnjbragdon#0001.",
+		["Duration"] = 4,
+	})
+end)
+
+local Windows = {
+	[1] = (function()
+		local Window = WallyLibraryV2:CreateWindow("Electric State", {["Parent"] = PlayerGui})
+		__applyCustom(Window)
+		return Window
+	end)(),
+}
+
+local locations = {"Scrapyard","Finkton","Vineyard","Rep-con","Node",}
+local Buildings = workspace:WaitForChild("Buildings")
+local Section = Windows[1]:Section("Movement")
+local Button = Windows[1]:Toggle("Noclipping", {["flag"] = "noclip"})
+local Button = Windows[1]:Toggle("Speed (LShift)", {["flag"] = "speed"})
+local Slider = Windows[1]:Slider("Torvel (S)", {["flag"] = "speed_torvel", ["min"] = 50, ["max"] = 250})
+local Button = Windows[1]:Toggle("Superjump", {["flag"] = "novelocity_jump"})
+local Slider = Windows[1]:Slider("Torvel (J)", {["flag"] = "jump_speed", ["min"] = 50, ["max"] = 250})
+local Button = Windows[1]:Toggle("Velocity Lock", {["flag"] = "velocity_lock_enabled"})
+local Section = Windows[1]:Section("Teleport")
+local Location = Windows[1]:Dropdown("Location", {["flag"] = "location", ["list"] = locations}, function(value)
+	local Character = Players.LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	if Character ~= nil and typeof(Character) == "Instance" and Character:IsA("Model") and Character:IsDescendantOf(workspace) and Humanoid ~= nil and typeof(Humanoid) == "Instance" and Humanoid:IsA("Humanoid") and Humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
+		Humanoid.RootPart.Velocity = Vector3.new(0, 0, 0)
+		Humanoid.RootPart.RotVelocity = Vector3.new(0, 0, 0)
+		if value == "Scrapyard" then
+			Character:MoveTo(Vector3.new(-1180, 125, 111))
+		elseif value == "Finkton" then
+			Character:MoveTo(Vector3.new(-633, 183, -1766))
+		elseif value == "Vineyard" then
+			Character:MoveTo(Vector3.new(1260, 295, -2102))
+		elseif value == "Rep-con" then
+			Character:MoveTo(Vector3.new(1622, 260, 778))
+		elseif value == "Node" then
+			for index, value in pairs(Buildings:GetChildren()) do
+				if value.Name == Players.LocalPlayer.Name then
+					local Node = value:FindFirstChild("Node")
+					Character:MoveTo(Node.PrimaryPart.Position + Vector3.new(0, 25, 0))
+				end
+			end
+		end
+	end
+end)
+local Box = Windows[1]:Box("Player", {}, function(username)
+	local Character = Players.LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	local player
+	if string.lower(username) == "random" then
+		player = Players:GetPlayers()[math.random(1, #Players:GetPlayers())]
+	else
+		for index, value in pairs(Players:GetPlayers()) do
+			if value ~= Players.LocalPlayer and string.lower(username) == string.lower(string.sub(value.Name, 1, string.len(username))) then
+				player = value
+			end
+		end
+	end
+	if Character ~= nil and typeof(Character) == "Instance" and Character:IsA("Model") and Character:IsDescendantOf(workspace) and Humanoid ~= nil and typeof(Humanoid) == "Instance" and Humanoid:IsA("Humanoid") and Humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
+		pcall(Character.MoveTo, Character, player.Character:FindFirstChildWhichIsA("Humanoid").RootPart.Position)
+	end
+end)
+local Section = Windows[1]:Section("Tracking")
+local Button = Windows[1]:Toggle("ESP", {["flag"] = "esp"})
+
+if not RunService:IsStudio() then
+	workspace.FallenPartsDestroyHeight = -1e6
+end
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local function OnRenderUpdate()
+	local Character = Players.LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	local RootPart = Humanoid.RootPart or Character:FindFirstChild("HumanoidRootPart")
+	local Torvel = (Windows[1]["flags"]["speed_torvel"] / 100) or 1
+	local JSpeed = (Windows[1]["flags"]["jump_speed"] / 100) or 1
+	
+	if Windows[1]["flags"]["velocity_lock_enabled"] == true then
+		RootPart.Velocity = Vector3.new(0, 0, 0)
+		RootPart.RotVelocity = Vector3.new(0, 0, 0)
+	end
+	
+	if Windows[1]["flags"]["noclip"] == true then
+		for index, value in pairs(Character:GetDescendants()) do
+			if value:IsA("BasePart") then
+				value.CanCollide = false
+			end
+		end
+	end
+	
+	if Windows[1]["flags"]["speed"] == true then
+		Humanoid.AutoRotate = true
+		if GPEService:IsProcessedKeyDown(Enum.KeyCode.LeftShift) then
+			if GPEService:IsProcessedKeyDown(Enum.KeyCode.W) or GPEService:IsProcessedKeyDown(Enum.KeyCode.Up) then
+				RootPart.CFrame = RootPart.CFrame * CFrame.new(0, 0, -Torvel)
+			end
+			if GPEService:IsProcessedKeyDown(Enum.KeyCode.A) then
+				RootPart.CFrame = RootPart.CFrame * CFrame.new(-Torvel, 0, 0)
+			end
+			if GPEService:IsProcessedKeyDown(Enum.KeyCode.S) or GPEService:IsProcessedKeyDown(Enum.KeyCode.Down) then
+				Humanoid.AutoRotate = false
+				RootPart.CFrame = RootPart.CFrame * CFrame.new(0, 0, Torvel)
+			end
+			if GPEService:IsProcessedKeyDown(Enum.KeyCode.D) then
+				RootPart.CFrame = RootPart.CFrame * CFrame.new(Torvel, 0, 0)
+			end
+		end
+	end
+	
+	if Windows[1]["flags"]["novelocity_jump"] == true then
+		if GPEService:IsProcessedKeyDown(Enum.KeyCode.Space) then
+			RootPart.CFrame = RootPart.CFrame * CFrame.new(0, JSpeed, 0)
+			RootPart.RotVelocity = Vector3.new(0, 0, 0)
+			RootPart.Velocity = Vector3.new(RootPart.Velocity.X < Torvel and RootPart.Velocity.X or Torvel, 0, RootPart.Velocity.Z < Torvel and RootPart.Velocity.Z or Torvel)
+		end
+	end
+	
+	if Windows[1]["flags"]["esp"] == true then
+		for index,value in pairs(workspace["MoneyPrinters"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				local BoxHandleAdornment = ESPService:MarkInstance(value.PrimaryPart)
+				BoxHandleAdornment.Color3 = value.Color
+			end
+		end
+		for index,value in pairs(workspace["Loot"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				local BoxHandleAdornment = ESPService:MarkInstance(value.PrimaryPart)
+				BoxHandleAdornment.Color3 = value.Color
+			end
+		end
+		for index,value in pairs(workspace["Scavege"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				local BoxHandleAdornment = ESPService:MarkInstance(value.PrimaryPart)
+				BoxHandleAdornment.Color3 = value.Color
+			end
+		end
+		for index,value in pairs(workspace["Materials"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				local BoxHandleAdornment = ESPService:MarkInstance(value.PrimaryPart)
+				BoxHandleAdornment.Color3 = value.Color
+			end
+		end
+	else
+		for index,value in pairs(workspace["MoneyPrinters"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				ESPService:UnmarkInstance(value.PrimaryPart)
+			end
+		end
+		for index,value in pairs(workspace["Loot"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				ESPService:UnmarkInstance(value.PrimaryPart)
+			end
+		end
+		for index,value in pairs(workspace["Scavege"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				ESPService:UnmarkInstance(value.PrimaryPart)
+			end
+		end
+		for index,value in pairs(workspace["Materials"]:GetChildren()) do
+			if value:IsA("Model") and value.PrimaryPart ~= nil then
+				ESPService:UnmarkInstance(value.PrimaryPart)
+			end
+		end
+	end
+end
+
+RunService.Stepped:Connect(function()
+	local success, response = pcall(OnRenderUpdate)
+	if not success and RunService:IsStudio() then
+		warn(response)
+	end
+end)
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
