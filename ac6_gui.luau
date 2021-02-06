@@ -1,241 +1,342 @@
-local S = setmetatable({}, {__index = function(self, index) return game:GetService(index) end, __newindex = function(self, index, value) game[index] = value end})
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-local ScreenGui
-local Frame
+--[[
+	This script was created by shawnjbragdon#0001.
+	If you are going to re-release this, please leave the credit.
+	
+	https://v3rmillion.net/member.php?action=profile&uid=1870134
+	https://forum.robloxscripts.com/user-shawnjbragdon
+	
+	This script was made using Synapse X.
+]]
 
-local BindableFunction = Instance.new("BindableFunction")
-BindableFunction.Name = "BindableFunction"
-BindableFunction.OnInvoke = function()
-	if not setclipboard then
-		S.StarterGui:SetCore("SendNotification", {
-			Title = "Notification",
-			Text = "Could not copy the Discord link because you don\'t have \'setclipboard\' on your exploit.",
-			Button1 = "Okay",
-		})
-		return
-	end
-	return setclipboard("https://discord.gg/yxBRdKkNVJ")
-end
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-S.StarterGui:SetCore("SendNotification", {
-	Title = "Notification",
-	Text = "Would you like to copy my Discord server link?",
-	Button1 = "Yes",
-	Button2 = "No",
-	Callback = BindableFunction,
-})
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local StarterPlayer = game:GetService("StarterPlayer")
+local TestService = game:GetService("TestService")
+local VirtualUser = game:GetService("VirtualUser")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))()
+local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))()
+local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
 
-if S.RunService:IsStudio() then
-	ScreenGui = script:FindFirstAncestorWhichIsA("ScreenGui")
-	pcall(function() ScreenGui.Parent = S.CoreGui end)
-else
-	local Model = game:GetObjects("rbxassetid://6075692865")
-	ScreenGui = Model[1]:Clone()
-	for index, value in pairs(ScreenGui:GetDescendants()) do
-		if value:IsA("Script") then
-			value:Destroy()
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local r = 255
+local g = 0
+local b = 0
+
+coroutine.resume(coroutine.create(function()
+	while true do
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			r = r - 1
+			g = g + 1
 		end
+		r = 0
+		g = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			g = g - 1
+			b = b + 1
+		end
+		g = 0
+		b = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			b = b - 1
+			r = r + 1
+		end
+		b = 0
+		r = 255
 	end
-	ScreenGui.Parent = S.CoreGui
+end))
+
+local __applyCustom = function(GuiObject)
+	coroutine.resume(coroutine.create(function()
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChild("Underline")
+		local TextLabel = GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		local Underline = GuiObject["object"]:FindFirstChild("Underline")
+		while true do
+			RunService.Stepped:Wait()
+			TextLabel.Font = Enum.Font.Michroma
+			TextLabel.TextColor3 = Color3.new(r / 255, g / 255, b / 255)
+			TextLabel.TextStrokeColor3 = Color3.new(r / 510, g / 510, b / 510)
+			TextLabel.TextStrokeTransparency = 0.5
+			Underline.BackgroundColor3 = Color3.new(r / 255, g / 255, b / 255)
+		end
+	end))
 end
 
-Frame = ScreenGui:FindFirstChildWhichIsA("Frame")
+default = {
+	topcolor       = Color3.fromRGB(30, 30, 30);
+	titlecolor     = Color3.fromRGB(255, 255, 255);
 
-local Values = {
-	["MaxSpeed"] = 300,
-	["SpeedUpKeybind"] = Enum.KeyCode.LeftShift,
-	["TeleportKeybind"] = Enum.KeyCode.T,
-	["StopVehicleKeybind"] = Enum.KeyCode.One,
+	underlinecolor = Color3.fromRGB(255, 0, 0);
+	bgcolor        = Color3.fromRGB(35, 35, 35);
+	boxcolor       = Color3.fromRGB(35, 35, 35);
+	btncolor       = Color3.fromRGB(25, 25, 25);
+	dropcolor      = Color3.fromRGB(25, 25, 25);
+	sectncolor     = Color3.fromRGB(25, 25, 25);
+	bordercolor    = Color3.fromRGB(60, 60, 60);
+
+	font           = Enum.Font.Jura;
+	titlefont      = Enum.Font.Michroma;
+
+	fontsize       = 17;
+	titlesize      = 18;
+
+	textstroke     = 1;
+	titlestroke    = 1;
+
+	strokecolor    = Color3.fromRGB(0, 0, 0);
+
+	textcolor      = Color3.fromRGB(255, 255, 255);
+	titletextcolor = Color3.fromRGB(255, 255, 255);
+
+	placeholdercolor = Color3.fromRGB(255, 255, 255);
+	titlestrokecolor = Color3.fromRGB(0, 0, 0);
 }
 
-local LocalPlayer = S.Players.LocalPlayer
-local Mouse = LocalPlayer:GetMouse()
-local GPEService = {}
+WallyLibraryV2["options"] = setmetatable({}, {__index = default})
 
-coroutine.resume(coroutine.create(function()
-	-- \\ taken from roblox admin post LOLOLOL
-	local UserInputService = game:GetService("UserInputService")
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-	local gui = Frame
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = (RunService:IsStudio() and LocalPlayer:FindFirstChildWhichIsA("PlayerGui")) or game:GetService("CoreGui")
+local PlayerMouse = LocalPlayer:GetMouse()
 
-	local dragging
-	local dragInput
-	local dragStart
-	local startPos
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-	local function update(input)
-		local delta = input.Position - dragStart
-		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-	end
+pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
+local Windows = {[1] = (function() local Window = WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui}); __applyCustom(Window); return Window; end)(),}
 
-	gui.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragStart = input.Position
-			startPos = gui.Position
-
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
-			end)
-		end
-	end)
-
-	gui.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
-	end)
-
-	UserInputService.InputChanged:Connect(function(input)
-		if input == dragInput and dragging then
-			update(input)
-		end
-	end)
-end))
-
-coroutine.resume(coroutine.create(function()
-	-- \\ GPEService built-into the script.
-	local RunService = game:GetService("RunService")
-	local UserInputService = game:GetService("UserInputService")
-
-	if RunService:IsServer() then
-		return error("GPEService is a client-only module.")
-	end
-
-	GPEService.KeysPressed = {}
-
-	UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
-		if gameProcessedEvent == true then
+Slider = Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 50, ["max"] = 800});
+Slider:Set(400)
+TextBox = Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(value)
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(EnumItem.Name) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["activation_key"] = EnumItem
 			return
 		end
-		if not table.find(GPEService.KeysPressed, inputObject.KeyCode) then
-			table.insert(GPEService.KeysPressed, inputObject.KeyCode)
+	end
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["activation_key"] = EnumItem
+			return
 		end
-	end)
+	end
+	TextBox.Text = "LeftShift"
+	Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
+end)
+TextBox.Text = "LeftShift"
+Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
 
-	UserInputService.InputEnded:Connect(function(inputObject)
-		for index,value in pairs(GPEService.KeysPressed) do
-			if value == inputObject.KeyCode then
-				table.remove(GPEService.KeysPressed, table.find(GPEService.KeysPressed, value))
+Slider = Windows[1]:Slider("Brake Force", {["flag"] = "brake_force", ["min"] = 0, ["max"] = 100});
+Slider:Set(20)
+TextBox2 = Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value)
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(EnumItem.Name) then
+			TextBox2.Text = EnumItem.Name
+			Windows[1]["flags"]["brake_key"] = EnumItem
+			return
+		end
+	end
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+			TextBox2.Text = EnumItem.Name
+			Windows[1]["flags"]["brake_key"] = EnumItem
+			return
+		end
+	end
+	TextBox2.Text = "S"
+	Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
+end)
+TextBox2.Text = "S"
+Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
+
+Button = Windows[1]:Button("Stop Vehicle", function()
+	local Character = LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	local VehicleSeat = Humanoid.SeatPart
+	local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+	if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+		Vehicle = Vehicle.Parent
+	end
+	for index, value in pairs(Vehicle:GetDescendants()) do
+		if value:IsA("BasePart") then
+			TweenService:Create(value, TweenInfo.new(0.25), {
+				["Velocity"] = Vector3.new(0, 0, 0),
+				["RotVelocity"] = Vector3.new(0, 0, 0),
+			}):Play()
+		end
+	end
+end)
+Windows[1]:Button("Massless", function()
+	local Character = LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	local VehicleSeat = Humanoid.SeatPart
+	local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+	if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+		Vehicle = Vehicle.Parent
+	end
+	for index, value in pairs(Vehicle:GetDescendants()) do
+		if value:IsA("BasePart") then
+			value.Massless = true
+		end
+	end
+end)
+Toggle = Windows[1]:Toggle("Click-TP Car", {["flag"] = "clicktp_car"})
+Windows[1]:Section("Springs (Experimental)")
+local Box = Windows[1]:Box("FL", {}, function(number)
+	if tonumber(number) and tonumber(number) < 6 then
+		number = tonumber(number)
+		local Character = LocalPlayer.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		local VehicleSeat = Humanoid.SeatPart
+		local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+		if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+			Vehicle = Vehicle.Parent
+		end
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") and value:FindFirstAncestor("FL") then
+				value.MaxLength = number + 2
+				value.MinLength = number
 			end
 		end
-	end)
-
-	function GPEService:IsProcessedKeyDown(KeyCode)
-		return table.find(GPEService.KeysPressed, KeyCode) ~= nil
 	end
-end))
+end)
+local Box = Windows[1]:Box("FR", {}, function(number)
+	if tonumber(number) and tonumber(number) < 6 then
+		number = tonumber(number)
+		local Character = LocalPlayer.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		local VehicleSeat = Humanoid.SeatPart
+		local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+		if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+			Vehicle = Vehicle.Parent
+		end
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") and value:FindFirstAncestor("FR") then
+				value.MaxLength = number + 2
+				value.MinLength = number
+			end
+		end
+	end
+end)
+local Box = Windows[1]:Box("RL", {}, function(number)
+	if tonumber(number) and tonumber(number) < 6 then
+		number = tonumber(number)
+		local Character = LocalPlayer.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		local VehicleSeat = Humanoid.SeatPart
+		local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+		if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+			Vehicle = Vehicle.Parent
+		end
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") and value:FindFirstAncestor("RL") then
+				value.MaxLength = number + 2
+				value.MinLength = number
+			end
+		end
+	end
+end)
+local Box = Windows[1]:Box("RR", {}, function(number)
+	if tonumber(number) and tonumber(number) < 6 then
+		number = tonumber(number)
+		local Character = LocalPlayer.Character
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+		local VehicleSeat = Humanoid.SeatPart
+		local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+		if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+			Vehicle = Vehicle.Parent
+		end
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") and value:FindFirstAncestor("RR") then
+				value.MaxLength = number + 2
+				value.MinLength = number
+			end
+		end
+	end
+end)
 
-local CurrentVehicle
-local SeatPart
+if not RunService:IsStudio() then workspace.FallenPartsDestroyHeight = -1e6; end
 
-local function CheckCondition()
-	local success, response = pcall(function()
-		return CurrentVehicle and SeatPart and LocalPlayer and LocalPlayer.Character and LocalPlayer.Humanoid
-	end)
-	return response == true
-end
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-local function GetSeatVelocity()
-	return SeatPart.Velocity, SeatPart.RotVelocity
-end
+local PlayerMouse = LocalPlayer:GetMouse()
 
-local function GetWheelVelocity()
-	local Wheels = CurrentVehicle:FindFirstChild("Wheels") or CurrentVehicle:FindFirstChild("Core")
-	return Wheels["FL"].Velocity, Wheels["FL"].RotVelocity
-end
-
-local function SetWheelVelocity(Velocity, RotVelocity)
-	local Wheels = CurrentVehicle:FindFirstChild("Wheels") or CurrentVehicle:FindFirstChild("Core")
-	for index, value in pairs(Wheels:GetDescendants()) do
+UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
+	if gameProcessedEvent == false and inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch --[[ yeah because mobile exploits apparently existed ]] then
 		pcall(function()
-			value.Velocity = Velocity
-			if RotVelocity ~= nil then
-				value.RotVelocity = RotVelocity
+			if Windows[1]["flags"]["clicktp_car"] then
+				if not PlayerMouse.Target then
+					return
+				end
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
+				end
+				Character.Parent = Vehicle
+				Vehicle:MoveTo(PlayerMouse.Hit.Position)
+				Character.Parent = workspace
 			end
 		end)
 	end
-end
-
-local function TeleportVehicle(Position)
-	-- \\ Will only accept Vector3 because many vehicles don't have a PrimaryPart.
-	-- \\ Feel free to use this. ~ shawnjbragdon
-	if LocalPlayer.Character.Humanoid.SeatPart:IsDescendantOf(CurrentVehicle) and GetWheelVelocity() ~= nil then
-		LocalPlayer.Character.Parent = CurrentVehicle
-		CurrentVehicle:MoveTo(Position)
-		LocalPlayer.Character.Parent = workspace
-	end
-end
-
-local function GetKeyCode(inf)
-	if typeof(inf) == "string" then
-		for index, value in pairs(Enum.KeyCode:GetEnumItems()) do
-			if value.Name == inf then
-				return value
-			end
-		end
-	elseif typeof(inf) == "number" then
-		for index, value in pairs(Enum.KeyCode:GetEnumItems()) do
-			if value.Value == inf then
-				return value
-			end
-		end
-	end
-	return Enum.KeyCode[inf]
-end
-
-Frame.Confirmation.MouseButton1Click:Connect(function()
-	local success, response = pcall(function()
-		Values["SpeedUpKeybind"] = GetKeyCode(Frame.SpeedUpKeybind:FindFirstChildWhichIsA("TextBox").Text)
-		Values["TeleportKeybind"] = GetKeyCode(Frame.TeleportKeybind:FindFirstChildWhichIsA("TextBox").Text)
-		Values["StopVehicleKeybind"] = GetKeyCode(Frame.StopVehicleKeybind:FindFirstChildWhichIsA("TextBox").Text)
-		-- the issue was right fucking here bruh im so blind but it is fixed lol
-		Values["MaxSpeed"] = tonumber(Frame.MaxSpeed:FindFirstChildWhichIsA("TextBox").Text)
-		return true
-	end)
-	if not success then
-		warn(response)
-	else
-		print("CONFIRMATION WORKED LOL WHAT THE FUCK bruh here is this: " .. tostring(response))
-	end
 end)
 
-S.UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
-	if inputObject.KeyCode == Values["StopVehicleKeybind"] and gameProcessedEvent == false then
-		for index, value in pairs(CurrentVehicle:GetDescendants()) do
-			if value:IsA("BasePart") then
-				S.TweenService:Create(value, TweenInfo.new(0.3), {
-					Velocity = Vector3.new(0, 0, 0),
-					RotVelocity = Vector3.new(0, 0, 0),
-				}):Play()
-			end
-		end
-	elseif inputObject.KeyCode == Values.TeleportKeybind and gameProcessedEvent == false then
-		TeleportVehicle(Mouse.Hit.Position + Vector3.new(0, 4, 0))
-	end
-end)
-
-S.RunService.Stepped:Connect(function(deltaTime)
-	pcall(function()
-		local Character = LocalPlayer.Character ~= nil and LocalPlayer.Character:IsDescendantOf(workspace) and LocalPlayer.Character
-		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
-		SeatPart = Humanoid.SeatPart ~= nil and Humanoid.SeatPart
-		CurrentVehicle = (not table.find({"misc", "wheels", "body"}, string.lower(SeatPart.Parent.Name)) and SeatPart.Parent) or SeatPart.Parent.Parent
-	end)
-	local s, r = pcall(function()
-		local MPH = ((10/12) * (60/88)) * SeatPart.Velocity.Magnitude
-		if GPEService:IsProcessedKeyDown(Values["SpeedUpKeybind"]) == true then
-			spawn(function()
-				if MPH > Values["MaxSpeed"] then
-					return
+RunService.Stepped:Connect(function()
+	if Windows[1]["flags"] then
+		local flags = Windows[1]["flags"]
+		if flags["activation_key"] and typeof(flags["activation_key"]) == "EnumItem" then
+			if GPEService:IsProcessedKeyDown(flags["activation_key"]) then
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
 				end
-				local WV, WRV = GetSeatVelocity()
-				SetWheelVelocity(WV * Vector3.new(1.2, 1, 1.2))
-			end)
+				for index, value in pairs(Vehicle:GetDescendants()) do
+					if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then
+						value.Velocity = value.Velocity * Vector3.new(1.2, 0.95, 1.2)
+					end
+				end
+			end
 		end
-		S.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
-	end)
-	if not s then S.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) warn(r) end
+		if flags["brake_key"] and typeof(flags["brake_key"]) == "EnumItem" then
+			if GPEService:IsProcessedKeyDown(flags["brake_key"]) then
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
+				end
+				for index, value in pairs(Vehicle:GetDescendants()) do
+					if value:IsA("BasePart") and value.Velocity.Magnitude >= 10 and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then
+						local val = 1 - (flags["brake_force"] / 100)
+						value.Velocity = value.Velocity * Vector3.new(val, 0, val)
+					end
+				end
+			end
+		end
+	end
 end)
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
