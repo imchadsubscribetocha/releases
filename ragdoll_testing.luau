@@ -186,11 +186,6 @@ coroutine.resume(coroutine.create(function()
 				local RTGui = PlayerGui["RTGui"]
 			end
 		end
-		if Windows[1]["flags"]["auto_escape"] == true then
-			pcall(function()
-				LocalPlayer:FindFirstChildWhichIsA("PlayerGui")["RTGui"].codebase.avatar.dropplrev:FireServer()
-			end)
-		end
 		wait(0.1)
 	end
 end))
