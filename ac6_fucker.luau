@@ -145,25 +145,25 @@ Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
 
 Slider = Windows[1]:Slider("Brake Force", {["flag"] = "brake_force", ["min"] = 0, ["max"] = 100});
 Slider:Set(20)
-TextBox = Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value)
+TextBox2 = Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value)
 	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
 		if string.lower(value) == string.lower(EnumItem.Name) then
-			TextBox.Text = EnumItem.Name
+			TextBox2.Text = EnumItem.Name
 			Windows[1]["flags"]["brake_key"] = EnumItem
 			return
 		end
 	end
 	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
 		if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
-			TextBox.Text = EnumItem.Name
+			TextBox2.Text = EnumItem.Name
 			Windows[1]["flags"]["brake_key"] = EnumItem
 			return
 		end
 	end
-	TextBox.Text = "S"
+	TextBox2.Text = "S"
 	Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
 end)
-TextBox.Text = "S"
+TextBox2.Text = "S"
 Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
 
 Button = Windows[1]:Button("Stop Vehicle", function()
