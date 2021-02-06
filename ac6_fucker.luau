@@ -1,0 +1,189 @@
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+--[[
+	This script was created by shawnjbragdon#0001.
+	If you are going to re-release this, please leave the credit.
+	
+	https://v3rmillion.net/member.php?action=profile&uid=1870134
+	https://forum.robloxscripts.com/user-shawnjbragdon
+	
+	This script was made using Synapse X.
+]]
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local RunService = game:GetService("RunService")
+local StarterPlayer = game:GetService("StarterPlayer")
+local TestService = game:GetService("TestService")
+local VirtualUser = game:GetService("VirtualUser")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))()
+local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))()
+local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local r = 255
+local g = 0
+local b = 0
+
+coroutine.resume(coroutine.create(function()
+	while true do
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			r = r - 1
+			g = g + 1
+		end
+		r = 0
+		g = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			g = g - 1
+			b = b + 1
+		end
+		g = 0
+		b = 255
+		for i = 1, 255, 1 do
+			RunService.Stepped:Wait()
+			b = b - 1
+			r = r + 1
+		end
+		b = 0
+		r = 255
+	end
+end))
+
+local __applyCustom = function(GuiObject)
+	coroutine.resume(coroutine.create(function()
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		repeat
+			wait()
+		until GuiObject["object"]:FindFirstChild("Underline")
+		local TextLabel = GuiObject["object"]:FindFirstChildWhichIsA("TextLabel")
+		local Underline = GuiObject["object"]:FindFirstChild("Underline")
+		while true do
+			RunService.Stepped:Wait()
+			TextLabel.Font = Enum.Font.Michroma
+			TextLabel.TextColor3 = Color3.new(r / 255, g / 255, b / 255)
+			TextLabel.TextStrokeColor3 = Color3.new(r / 510, g / 510, b / 510)
+			TextLabel.TextStrokeTransparency = 0.5
+			Underline.BackgroundColor3 = Color3.new(r / 255, g / 255, b / 255)
+		end
+	end))
+end
+
+default = {
+	topcolor       = Color3.fromRGB(30, 30, 30);
+	titlecolor     = Color3.fromRGB(255, 255, 255);
+
+	underlinecolor = Color3.fromRGB(255, 0, 0);
+	bgcolor        = Color3.fromRGB(35, 35, 35);
+	boxcolor       = Color3.fromRGB(35, 35, 35);
+	btncolor       = Color3.fromRGB(25, 25, 25);
+	dropcolor      = Color3.fromRGB(25, 25, 25);
+	sectncolor     = Color3.fromRGB(25, 25, 25);
+	bordercolor    = Color3.fromRGB(60, 60, 60);
+
+	font           = Enum.Font.Jura;
+	titlefont      = Enum.Font.Michroma;
+
+	fontsize       = 17;
+	titlesize      = 18;
+
+	textstroke     = 1;
+	titlestroke    = 1;
+
+	strokecolor    = Color3.fromRGB(0, 0, 0);
+
+	textcolor      = Color3.fromRGB(255, 255, 255);
+	titletextcolor = Color3.fromRGB(255, 255, 255);
+
+	placeholdercolor = Color3.fromRGB(255, 255, 255);
+	titlestrokecolor = Color3.fromRGB(0, 0, 0);
+}
+
+WallyLibraryV2["options"] = setmetatable({}, {__index = default})
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = (RunService:IsStudio() and LocalPlayer:FindFirstChildWhichIsA("PlayerGui")) or game:GetService("CoreGui")
+local PlayerMouse = LocalPlayer:GetMouse()
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
+local Windows = {[1] = (function() local Window = WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui}); __applyCustom(Window); return Window; end)(),}
+Slider = Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 50, ["max"] = 800});
+Slider:Set(400)
+TextBox = Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(value)
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(EnumItem.Name) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["activation_key"] = EnumItem
+			return
+		end
+	end
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["activation_key"] = EnumItem
+			return
+		end
+	end
+	TextBox.Text = "Unknown"
+	Windows[1]["flags"]["activation_key"] = nil
+end)
+TextBox.Text = "LeftShift"
+Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
+Button = Windows[1]:Button("Stop Vehicle", function()
+	local Character = LocalPlayer.Character
+	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+	local VehicleSeat = Humanoid.SeatPart
+	local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+	if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+		Vehicle = Vehicle.Parent
+	end
+	for index, value in pairs(Vehicle:GetDescendants()) do
+		if value:IsA("BasePart") then
+			TweenService:Create(value, TweenInfo.new(0.25), {
+				["Velocity"] = Vector3.new(0, 0, 0),
+				["RotVelocity"] = Vector3.new(0, 0, 0),
+			}):Play()
+		end
+	end
+end)
+
+
+if not RunService:IsStudio() then workspace.FallenPartsDestroyHeight = -1e6; end
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+RunService.Stepped:Connect(function()
+	if Windows[1]["flags"] then
+		local flags = Windows[1]["flags"]
+		if flags["activation_key"] and typeof(flags["activation_key"]) == "EnumItem" then
+			if GPEService:IsProcessedKeyDown(flags["activation_key"]) then
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
+				end
+				for index, value in pairs(Vehicle:GetDescendants()) do
+					if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then
+						value.Velocity = value.Velocity * Vector3.new(1.2, 0.95, 1.2)
+					end
+				end
+			end
+		end
+	end
+end)
+
+--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
