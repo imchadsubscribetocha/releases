@@ -182,8 +182,12 @@ coroutine.resume(coroutine.create(function()
 				end
 			end
 			if flags["auto_escape"] == true then
-				local PlayerGui = LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
-				local RTGui = PlayerGui["RTGui"]
+				local PlayerGui = LocalPlayer:FindFirstChildWhichIsA("PlayerGui");
+				local RTGui = PlayerGui["RTGui"];
+				local codebase = RTGui["codebase"];
+				local avatar = codebase["avatar"];
+				local dropplrev = avatar["dropplrev"]
+				dropplrev:FireServer()
 			end
 		end
 		wait(0.1)
