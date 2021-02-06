@@ -119,6 +119,7 @@ local PlayerMouse = LocalPlayer:GetMouse()
 
 pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
 local Windows = {[1] = (function() local Window = WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui}); __applyCustom(Window); return Window; end)(),}
+
 Slider = Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 50, ["max"] = 800});
 Slider:Set(400)
 TextBox = Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(value)
@@ -136,11 +137,35 @@ TextBox = Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(valu
 			return
 		end
 	end
-	TextBox.Text = "Unknown"
-	Windows[1]["flags"]["activation_key"] = nil
+	TextBox.Text = "LeftShift"
+	Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
 end)
 TextBox.Text = "LeftShift"
 Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift
+
+Slider = Windows[1]:Slider("Brake Force", {["flag"] = "brake_force", ["min"] = 0, ["max"] = 100});
+Slider:Set(20)
+TextBox = Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value)
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(EnumItem.Name) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["brake_key"] = EnumItem
+			return
+		end
+	end
+	for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+		if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+			TextBox.Text = EnumItem.Name
+			Windows[1]["flags"]["brake_key"] = EnumItem
+			return
+		end
+	end
+	TextBox.Text = "S"
+	Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
+end)
+TextBox.Text = "S"
+Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S
+
 Button = Windows[1]:Button("Stop Vehicle", function()
 	local Character = LocalPlayer.Character
 	local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
@@ -158,11 +183,31 @@ Button = Windows[1]:Button("Stop Vehicle", function()
 		end
 	end
 end)
-
-
+Toggle = Windows[1]:Toggle("Click-TP Car", {["flag"] = "clicktp_car"})
 if not RunService:IsStudio() then workspace.FallenPartsDestroyHeight = -1e6; end
 
 --==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+
+local PlayerMouse = LocalPlayer:GetMouse()
+
+UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
+	if gameProcessedEvent == false and inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch --[[ yeah because mobile exploits apparently existed ]] then
+		pcall(function()
+			if Windows[1]["flags"]["clicktp_car"] then
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
+				end
+				Character.Parent = Vehicle
+				Vehicle:MoveTo(PlayerMouse.Hit.Position)
+				Character.Parent = workspace
+			end
+		end)
+	end
+end)
 
 RunService.Stepped:Connect(function()
 	if Windows[1]["flags"] then
@@ -179,6 +224,23 @@ RunService.Stepped:Connect(function()
 				for index, value in pairs(Vehicle:GetDescendants()) do
 					if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then
 						value.Velocity = value.Velocity * Vector3.new(1.2, 0.95, 1.2)
+					end
+				end
+			end
+		end
+		if flags["brake_key"] and typeof(flags["brake_key"]) == "EnumItem" then
+			if GPEService:IsProcessedKeyDown(flags["brake_key"]) then
+				local Character = LocalPlayer.Character
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+				local VehicleSeat = Humanoid.SeatPart
+				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+					Vehicle = Vehicle.Parent
+				end
+				for index, value in pairs(Vehicle:GetDescendants()) do
+					if value:IsA("BasePart") and value.Velocity.Magnitude >= 10 and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then
+						local val = 1 - (flags["brake_force"] / 100)
+						value.Velocity = value.Velocity * Vector3.new(val, 0, val)
 					end
 				end
 			end
