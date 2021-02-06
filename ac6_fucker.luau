@@ -194,6 +194,9 @@ UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
 	if gameProcessedEvent == false and inputObject.UserInputType == Enum.UserInputType.MouseButton1 or inputObject.UserInputType == Enum.UserInputType.Touch --[[ yeah because mobile exploits apparently existed ]] then
 		pcall(function()
 			if Windows[1]["flags"]["clicktp_car"] then
+				if not PlayerMouse.Target then
+					return
+				end
 				local Character = LocalPlayer.Character
 				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
 				local VehicleSeat = Humanoid.SeatPart
