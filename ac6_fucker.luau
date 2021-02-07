@@ -12,7 +12,7 @@
 
 --==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-local Players = game:GetService("Players"); local StarterGui = game:GetService("StarterGui"); local RunService = game:GetService("RunService"); local StarterPlayer = game:GetService("StarterPlayer"); local TestService = game:GetService("TestService"); local VirtualUser = game:GetService("VirtualUser"); local TweenService = game:GetService("TweenService"); local UserInputService = game:GetService("UserInputService"); local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))(); local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))(); local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
+local Players = game:GetService("Players"); local ReplicatedStorage = game:GetService("ReplicatedStorage"); local StarterGui = game:GetService("StarterGui"); local RunService = game:GetService("RunService"); local StarterPlayer = game:GetService("StarterPlayer"); local TestService = game:GetService("TestService"); local VirtualUser = game:GetService("VirtualUser"); local TweenService = game:GetService("TweenService"); local UserInputService = game:GetService("UserInputService"); local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))(); local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))(); local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
 local r = 255; local g = 0; local b = 0; coroutine.resume(coroutine.create(function() while true do for i = 1, 255, 1 do RunService.Stepped:Wait(); r = r - 1; g = g + 1; end; r = 0; g = 255; for i = 1, 255, 1 do RunService.Stepped:Wait(); g = g - 1; b = b + 1; end; g = 0; b = 255; for i = 1, 255, 1 do RunService.Stepped:Wait(); b = b - 1; r = r + 1; end; b = 0; r = 255; end; end))
 local __applyCustom = function(GuiObject) coroutine.resume(coroutine.create(function() repeat wait(); until GuiObject["object"]:FindFirstChildWhichIsA("TextLabel"); repeat wait(); until GuiObject["object"]:FindFirstChild("Underline"); local TextLabel = GuiObject["object"]:FindFirstChildWhichIsA("TextLabel"); local Underline = GuiObject["object"]:FindFirstChild("Underline"); while true do RunService.Stepped:Wait(); TextLabel.Font = Enum.Font.Michroma; TextLabel.TextColor3 = Color3.new(r / 255, g / 255, b / 255); TextLabel.TextStrokeColor3 = Color3.new(r / 510, g / 510, b / 510); TextLabel.TextStrokeTransparency = 0.5; Underline.BackgroundColor3 = Color3.new(r / 255, g / 255, b / 255); end; end)); end;
 default = {topcolor = Color3.fromRGB(30, 30, 30);titlecolor = Color3.fromRGB(255, 255, 255);underlinecolor = Color3.fromRGB(255, 0, 0);bgcolor = Color3.fromRGB(35, 35, 35);boxcolor = Color3.fromRGB(35, 35, 35);btncolor = Color3.fromRGB(25, 25, 25);dropcolor = Color3.fromRGB(25, 25, 25);sectncolor = Color3.fromRGB(25, 25, 25);bordercolor = Color3.fromRGB(60, 60, 60);font = Enum.Font.Jura;titlefont = Enum.Font.Michroma;fontsize = 17;titlesize = 18;textstroke = 1;titlestroke = 1;strokecolor = Color3.fromRGB(0, 0, 0);textcolor = Color3.fromRGB(255, 255, 255);titletextcolor = Color3.fromRGB(255, 255, 255);placeholdercolor = Color3.fromRGB(255, 255, 255);titlestrokecolor = Color3.fromRGB(0, 0, 0);}
@@ -22,32 +22,227 @@ local PlayerGui = (RunService:IsStudio() and LocalPlayer:FindFirstChildWhichIsA(
 local PlayerMouse = LocalPlayer:GetMouse()
 pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
 
+local function GetVehicle(VehicleSeat)
+	if game.PlaceId == 1636712 then
+		if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model") then
+			return Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model")
+		end
+	elseif game.PlaceId == 4924922222 then
+		local Vehicles = workspace:FindFirstChild("Vehicles")
+		if Vehicles:FindFirstChild(string.format("%sCar", LocalPlayer.Name)) then
+			local VehicleContainer = Vehicles[string.format("%sCar", LocalPlayer.Name)]
+			if VehicleContainer:FindFirstChildWhichIsA("Model") then
+				return VehicleContainer:FindFirstChildWhichIsA("Model")
+			end
+			return nil
+		end
+	elseif game.PlaceId == 4410049285 then
+		local CameraSubject = workspace.CurrentCamera.CameraSubject
+		if CameraSubject:IsA("BasePart") then
+			local Vehicle = CameraSubject.Parent
+			return Vehicle
+		end
+	end
+	local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model");
+	if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
+		Vehicle = Vehicle.Parent;
+	end;
+	return Vehicle
+end
+
+local function GetWheels(Vehicle)
+	local Wheels = {}
+	if game.PlaceId == 1636712 then
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if table.find({"FLSteerWheel", "FRSteerWheel", "RLWheel", "RRWheel", "RLDouble", "RLDouble2", "RRDouble", "RRDouble2"}, value.Name) then
+				table.insert(Wheels, value)
+				value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0, 0.5)
+			end
+		end
+		return Wheels
+	elseif game.PlaceId == 4924922222 then
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("BasePart") and (value:FindFirstAncestor("WheelBL") or value:FindFirstAncestor("WheelBR") or value:FindFirstAncestor("WheelFL") or value:FindFirstAncestor("WheelFR")) then
+				table.insert(Wheels, value)
+			end
+		end
+		return Wheels
+	elseif game.PlaceId == 4410049285 then
+		for index, value in pairs(Vehicle["Wheels"]:GetDescendants()) do
+			if value:IsA("BasePart") then
+				table.insert(Wheels, value)
+			end
+		end
+		return Wheels
+	end
+	local Children = (Vehicle:FindFirstChild("Wheels") or Vehicle:FindFirstChild("Core")):GetChildren()
+	for index, value in pairs(Children) do
+		if value:IsA("BasePart") then
+			table.insert(Wheels, value)
+		end
+	end
+	return Wheels
+end
+
 local Windows	= {[1] = (function() local Window = WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui}); __applyCustom(Window); return Window; end)(),}
 
-Slider			= Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 50, ["max"] = 800}); Slider:Set(400)
-TextBox			= Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(value) for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do if string.lower(value) == string.lower(EnumItem.Name) then TextBox.Text = EnumItem.Name; Windows[1]["flags"]["activation_key"] = EnumItem; return; end; end; for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then TextBox.Text = EnumItem.Name; Windows[1]["flags"]["activation_key"] = EnumItem; return; end; end; TextBox.Text = "LeftShift"; Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift; end);
+if game.PlaceId == 4924922222 then
+	Slider			= Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 25, ["max"] = 400}); Slider:Set(200)
+	Toggle			= Windows[1]:Toggle("Rainbow Car", {["flag"] = "bh_rainbowcar"})
+	RunService.Stepped:Connect(function()
+		if Windows[1] and Windows[1]["flags"] then
+			local flags = Windows[1]["flags"];
+			if flags["bh_rainbowcar"] == true then
+				ReplicatedStorage.RemoteEvents.PlayersCar:FireServer("PickingCarColor", {["Value"] = BrickColor.new(Color3.fromRGB(r, g, b)).Name});
+			end
+			if flags["max_speed"] then
+				local Character = LocalPlayer.Character;
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+				local VehicleSeat = Humanoid.SeatPart;
+				VehicleSeat:FindFirstChild("TopSpeed").Value = flags["max_speed"];
+			end
+		end
+	end)
+else
+	Slider			= Windows[1]:Slider("Accel.", {["flag"] = "acceleration", ["min"] = 0, ["max"] = 20}) Slider:Set(10)
+	Slider			= Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 50, ["max"] = 800}); Slider:Set(400)
+	TextBox			= Windows[1]:Box("KeyCode", {["flag"] = "activation_key"}, function(value)
+		for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+			if string.lower(value) == string.lower(EnumItem.Name) then
+				TextBox.Text = EnumItem.Name;
+				Windows[1]["flags"]["activation_key"] = EnumItem;
+				return;
+			end;
+		end;
+		for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+			if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+				TextBox.Text = EnumItem.Name;
+				Windows[1]["flags"]["activation_key"] = EnumItem;
+				return;
+			end;
+		end;
+		TextBox.Text = "LeftShift";
+		Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift;
+	end);
 
-TextBox.Text	= "LeftShift"; Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift;
+	TextBox.Text	= "LeftShift"; Windows[1]["flags"]["activation_key"] = Enum.KeyCode.LeftShift;
 
-Slider			= Windows[1]:Slider("Brake Force", {["flag"] = "brake_force", ["min"] = 0, ["max"] = 100}); Slider:Set(20)
-TextBox2		= Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value) for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do if string.lower(value) == string.lower(EnumItem.Name) then TextBox2.Text = EnumItem.Name; Windows[1]["flags"]["brake_key"] = EnumItem; return; end; end; for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then TextBox2.Text = EnumItem.Name; Windows[1]["flags"]["brake_key"] = EnumItem; return; end; end; TextBox2.Text = "S"; Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S; end);
+	Slider = Windows[1]:Slider("Brake Force", {["flag"] = "brake_force", ["min"] = 0, ["max"] = 100}); Slider:Set(20)
+	TextBox2 = Windows[1]:Box("KeyCode", {["flag"] = "brake_key"}, function(value)
+		for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+			if string.lower(value) == string.lower(EnumItem.Name) then
+				TextBox2.Text = EnumItem.Name;
+				Windows[1]["flags"]["brake_key"] = EnumItem;
+				return;
+			end;
+		end;
+		for _, EnumItem in pairs(Enum.KeyCode:GetEnumItems()) do
+			if string.lower(value) == string.lower(string.sub(EnumItem.Name, 1, string.len(value))) then
+				TextBox2.Text = EnumItem.Name;
+				Windows[1]["flags"]["brake_key"] = EnumItem;
+				return
+			end;
+		end;
+		TextBox2.Text = "S";
+		Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S;
+	end);
 
-TextBox2.Text	= "S"; Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S;
+	TextBox2.Text = "S"; Windows[1]["flags"]["brake_key"] = Enum.KeyCode.S;
 
-Button			= Windows[1]:Button("Stop Vehicle", function() local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("BasePart") then TweenService:Create(value, TweenInfo.new(0.25), {["Velocity"] = Vector3.new(0, 0, 0); ["RotVelocity"] = Vector3.new(0, 0, 0)}):Play(); end; end; end)
-Button			= Windows[1]:Button("Massless", function() local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("BasePart") then value.Massless = true; end; end; end)
-Toggle			= Windows[1]:Toggle("Click-TP Car", {["flag"] = "clicktp_car"})
-Section			= Windows[1]:Section("Springs (Experimental)");
-Box				= Windows[1]:Box("Height", {}, function(number) if tonumber(number) then number = tonumber(number); local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("SpringConstraint") then TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {["MaxLength"] = number + 2;["MinLength"] = number;}):Play(); end; end; end; end)
-Box				= Windows[1]:Box("Stiffness", {}, function(number) if tonumber(number) then number = tonumber(number); local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("SpringConstraint") then TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {["Stiffness"] = number}):Play(); end; end; end; end)
-Toggle			= Windows[1]:Toggle("Visible", {}, function(boolean) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("SpringConstraint") then value.Visible = boolean == true; end; end; end)
-Toggle			= Windows[1]:Toggle("Limited", {}, function(boolean) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("SpringConstraint") then value.LimitsEnabled = boolean == true; end; end; end)
-Section			= Windows[1]:Section("Wheels")
-if game.PlaceId == 5232896677 then
-	Box			= Windows[1]:Box("+X DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then value.C0 = value.C0 * CFrame.new(number, 0, 0); end; end; end)
-	Box			= Windows[1]:Box("+Y DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then value.C0 = value.C0 * CFrame.new(0, number, 0); end; end; end)
-	Box			= Windows[1]:Box("+Z DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then if value:FindFirstAncestor("FL") or value:FindFirstAncestor("RL") then value.C0 = value.C0 * CFrame.new(0, 0, number); elseif value:FindFirstAncestor("FR") or value:FindFirstAncestor("RR") then value.C0 = value.C0 * CFrame.new(0, 0, -number); end; end; end; end)
-	Box			= Windows[1]:Button("Reset Wheels", function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0), {C0 = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))}):Play(); end; end; end)
+	Button			= Windows[1]:Button("Stop Vehicle", function()
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("BasePart") then
+				TweenService:Create(value, TweenInfo.new(0.25), {
+					["Velocity"] = Vector3.new(0, 0, 0);
+					["RotVelocity"] = Vector3.new(0, 0, 0)
+				}):Play();
+			end;
+		end;
+	end)
+	Button = Windows[1]:Button("Massless", function()
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("BasePart") then
+				value.Massless = true;
+			end;
+		end;
+	end)
+	Button = Windows[1]:Button("Weightless", function()
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("BasePart") and value.Name == "#Weight" then
+				value:Destroy()
+			end;
+		end;
+	end)
+	Button = Windows[1]:Button("No Hitbox", function()
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("BasePart") and table.find({"hitbox", "#hitbox"}, string.lower(value.Name)) then
+				value:Destroy()
+			end;
+		end;
+	end)
+	Toggle			= Windows[1]:Toggle("(L) RotVelocity", {["flag"] = "limited_rotation_velocity"})
+	Toggle			= Windows[1]:Toggle("Click-TP Car", {["flag"] = "clicktp_car"})
+	Section			= Windows[1]:Section("Springs (Experimental)");
+	Box				= Windows[1]:Box("Height", {}, function(number)
+		if tonumber(number) then
+			number = tonumber(number);
+			local Character = LocalPlayer.Character;
+			local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+			local VehicleSeat = Humanoid.SeatPart;
+			local Vehicle = GetVehicle(VehicleSeat)
+			for index, value in pairs(Vehicle:GetDescendants()) do
+				if value:IsA("SpringConstraint") then
+					TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {["MaxLength"] = number + 2;["MinLength"] = number;}):Play();
+				end;
+			end;
+		end;
+	end)
+	Box				= Windows[1]:Box("Stiffness", {}, function(number) if tonumber(number) then number = tonumber(number); local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("SpringConstraint") then TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut, 0, false, 0), {["Stiffness"] = number}):Play(); end; end; end; end)
+	Toggle			= Windows[1]:Toggle("Visible", {}, function(boolean)
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") then
+				value.Visible = boolean == true;
+			end;
+		end;
+	end)
+	Toggle			= Windows[1]:Toggle("Limited", {}, function(boolean)
+		local Character = LocalPlayer.Character;
+		local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+		local VehicleSeat = Humanoid.SeatPart;
+		local Vehicle = GetVehicle(VehicleSeat);
+		for index, value in pairs(Vehicle:GetDescendants()) do
+			if value:IsA("SpringConstraint") then
+				value.LimitsEnabled = boolean == true;
+			end;
+		end;
+	end)
+	if game.PlaceId == 5232896677 then
+		Section		= Windows[1]:Section("Wheels (Experimental)")
+		Box			= Windows[1]:Box("+X DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then value.C0 = value.C0 * CFrame.new(number, 0, 0); end; end; end)
+		Box			= Windows[1]:Box("+Y DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then value.C0 = value.C0 * CFrame.new(0, number, 0); end; end; end)
+		Box			= Windows[1]:Box("+Z DIST", {}, function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then if value:FindFirstAncestor("FL") or value:FindFirstAncestor("RL") then value.C0 = value.C0 * CFrame.new(0, 0, number); elseif value:FindFirstAncestor("FR") or value:FindFirstAncestor("RR") then value.C0 = value.C0 * CFrame.new(0, 0, -number); end; end; end; end)
+		Box			= Windows[1]:Button("Reset Wheels", function(number) local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("Weld") and value.Name == "Weld" and value:FindFirstAncestor("#SB") then TweenService:Create(value, TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0), {C0 = CFrame.new(0, 0, 0) * CFrame.Angles(math.rad(0), math.rad(0), math.rad(0))}):Play(); end; end; end)
+	end
 end
 
 if not RunService:IsStudio() then
@@ -66,18 +261,59 @@ UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
 				local Character = LocalPlayer.Character;
 				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
 				local VehicleSeat = Humanoid.SeatPart;
-				local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model");
-				if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
-					Vehicle = Vehicle.Parent;
-				end;
-				Character.Parent = Vehicle;
-				Vehicle:MoveTo(PlayerMouse.Hit.Position);
-				Character.Parent = workspace;
+				local Vehicle = GetVehicle(VehicleSeat);
+				if game.PlaceId == 4410049285 then
+					Vehicle:MoveTo(PlayerMouse.Hit.Position);
+				else
+					Character.Parent = Vehicle;
+					Vehicle:MoveTo(PlayerMouse.Hit.Position);
+					Character.Parent = workspace;
+				end
 			end;
 		end);
 	end;
 end)
 
-RunService.Stepped:Connect(function() if Windows[1]["flags"] then local flags = Windows[1]["flags"]; if flags["activation_key"] and typeof(flags["activation_key"]) == "EnumItem" then if GPEService:IsProcessedKeyDown(flags["activation_key"]) then local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then value.Velocity = value.Velocity * Vector3.new(1.2, 0.95, 1.2); end; end; end; end; if flags["brake_key"] and typeof(flags["brake_key"]) == "EnumItem" then if GPEService:IsProcessedKeyDown(flags["brake_key"]) then local Character = LocalPlayer.Character; local Humanoid = Character:FindFirstChildWhichIsA("Humanoid"); local VehicleSeat = Humanoid.SeatPart; local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model"); if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then Vehicle = Vehicle.Parent; end; for index, value in pairs(Vehicle:GetDescendants()) do if value:IsA("BasePart") and value.Velocity.Magnitude >= 10 and (value:FindFirstAncestor("Wheels") or value:FindFirstAncestor("Core")) then local val = 1 - (flags["brake_force"] / 100); value.Velocity = value.Velocity * Vector3.new(val, 0, val); end; end; end; end; end; end)
+RunService.Stepped:Connect(function()
+	if Windows[1]["flags"] then
+		local flags = Windows[1]["flags"];
+		if flags["activation_key"] and typeof(flags["activation_key"]) == "EnumItem" then
+			if (game.PlaceId ~= 4410049285 and GPEService:IsProcessedKeyDown(flags["activation_key"])) or UserInputService:IsKeyDown(flags["activation_key"]) then
+				local Character = LocalPlayer.Character;
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+				local VehicleSeat = Humanoid.SeatPart;
+				local Vehicle = GetVehicle(VehicleSeat);
+				local Wheels = GetWheels(Vehicle)
+				for index, value in pairs(Wheels) do
+					if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude then
+						local acc = 1 + (flags["acceleration"] / 100)
+						value.Velocity = value.Velocity * Vector3.new(acc, 0.95, acc);
+						if flags["limited_rotation_velocity"] == true then
+							value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0.5, 0.5)
+						end
+					end;
+				end;
+			end;
+		end;
+		if flags["brake_key"] and typeof(flags["brake_key"]) == "EnumItem" then
+			if (game.PlaceId ~= 4410049285 and GPEService:IsProcessedKeyDown(flags["brake_key"])) or UserInputService:IsKeyDown(flags["brake_key"]) then
+				local Character = LocalPlayer.Character;
+				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
+				local VehicleSeat = Humanoid.SeatPart;
+				local Vehicle = GetVehicle(VehicleSeat);
+				local Wheels = GetWheels(Vehicle)
+				for index, value in pairs(Wheels) do
+					if value:IsA("BasePart") and value.Velocity.Magnitude >= 10 then
+						local val = 1 - (flags["brake_force"] / 100);
+						value.Velocity = value.Velocity * Vector3.new(val, 0, val);
+						if flags["limited_rotation_velocity"] == true then
+							value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0.5, 0.5)
+						end
+					end;
+				end;
+			end;
+		end;
+	end;
+end)
 
 --==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
