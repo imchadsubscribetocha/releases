@@ -12,96 +12,170 @@
 
 --==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
 
-local Players = game:GetService("Players"); local ReplicatedStorage = game:GetService("ReplicatedStorage"); local StarterGui = game:GetService("StarterGui"); local RunService = game:GetService("RunService"); local StarterPlayer = game:GetService("StarterPlayer"); local TestService = game:GetService("TestService"); local VirtualUser = game:GetService("VirtualUser"); local TweenService = game:GetService("TweenService"); local UserInputService = game:GetService("UserInputService"); local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))(); local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))(); local ESPService = (RunService:IsStudio() and require(script:WaitForChild("ESPService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/espservice.luau", true))()
-local r = 255; local g = 0; local b = 0; coroutine.resume(coroutine.create(function() while true do for i = 1, 255, 1 do RunService.Stepped:Wait(); r = r - 1; g = g + 1; end; r = 0; g = 255; for i = 1, 255, 1 do RunService.Stepped:Wait(); g = g - 1; b = b + 1; end; g = 0; b = 255; for i = 1, 255, 1 do RunService.Stepped:Wait(); b = b - 1; r = r + 1; end; b = 0; r = 255; end; end))
-local __applyCustom = function(GuiObject) coroutine.resume(coroutine.create(function() repeat wait(); until GuiObject["object"]:FindFirstChildWhichIsA("TextLabel"); repeat wait(); until GuiObject["object"]:FindFirstChild("Underline"); local TextLabel = GuiObject["object"]:FindFirstChildWhichIsA("TextLabel"); local Underline = GuiObject["object"]:FindFirstChild("Underline"); while true do RunService.Stepped:Wait(); TextLabel.Font = Enum.Font.Michroma; TextLabel.TextColor3 = Color3.new(r / 255, g / 255, b / 255); TextLabel.TextStrokeColor3 = Color3.new(r / 510, g / 510, b / 510); TextLabel.TextStrokeTransparency = 0.5; Underline.BackgroundColor3 = Color3.new(r / 255, g / 255, b / 255); end; end)); end;
-default = {topcolor = Color3.fromRGB(30, 30, 30);titlecolor = Color3.fromRGB(255, 255, 255);underlinecolor = Color3.fromRGB(255, 0, 0);bgcolor = Color3.fromRGB(35, 35, 35);boxcolor = Color3.fromRGB(35, 35, 35);btncolor = Color3.fromRGB(25, 25, 25);dropcolor = Color3.fromRGB(25, 25, 25);sectncolor = Color3.fromRGB(25, 25, 25);bordercolor = Color3.fromRGB(60, 60, 60);font = Enum.Font.Jura;titlefont = Enum.Font.Michroma;fontsize = 17;titlesize = 18;textstroke = 1;titlestroke = 1;strokecolor = Color3.fromRGB(0, 0, 0);textcolor = Color3.fromRGB(255, 255, 255);titletextcolor = Color3.fromRGB(255, 255, 255);placeholdercolor = Color3.fromRGB(255, 255, 255);titlestrokecolor = Color3.fromRGB(0, 0, 0);}
+local Players = game:GetService("Players");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local StarterGui = game:GetService("StarterGui");
+local RunService = game:GetService("RunService");
+local StarterPlayer = game:GetService("StarterPlayer");
+local TestService = game:GetService("TestService");
+local VirtualUser = game:GetService("VirtualUser");
+local TweenService = game:GetService("TweenService");
+local UserInputService = game:GetService("UserInputService");
+local WallyLibraryV2 = (RunService:IsStudio() and require(script:WaitForChild("WallyLibraryV2"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/wallyhub_modified.luau", true))();
+local GPEService = (RunService:IsStudio() and require(script:WaitForChild("GPEService"))) or loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/gpeservice.luau", true))();
+
+default = {
+	topcolor = Color3.fromRGB(30, 30, 30);
+	titlecolor = Color3.fromRGB(255, 255, 255);
+	underlinecolor = Color3.fromRGB(255, 0, 0);
+	bgcolor = Color3.fromRGB(35, 35, 35);
+	boxcolor = Color3.fromRGB(35, 35, 35);
+	btncolor = Color3.fromRGB(25, 25, 25);
+	dropcolor = Color3.fromRGB(25, 25, 25);
+	sectncolor = Color3.fromRGB(25, 25, 25);
+	bordercolor = Color3.fromRGB(60, 60, 60);
+	font = Enum.Font.Jura;
+	titlefont = Enum.Font.Michroma;
+	fontsize = 17;
+	titlesize = 18;
+	textstroke = 1;
+	titlestroke = 1;
+	strokecolor = Color3.fromRGB(0, 0, 0);
+	textcolor = Color3.fromRGB(255, 255, 255);
+	titletextcolor = Color3.fromRGB(255, 255, 255);
+	placeholdercolor = Color3.fromRGB(255, 255, 255);
+	titlestrokecolor = Color3.fromRGB(0, 0, 0);
+};
+
 WallyLibraryV2["options"] = setmetatable({}, {__index = default})
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = (RunService:IsStudio() and LocalPlayer:FindFirstChildWhichIsA("PlayerGui")) or game:GetService("CoreGui")
-local PlayerMouse = LocalPlayer:GetMouse()
+
 pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
 
+local LocalPlayer = Players.LocalPlayer
+local S, CoreGui = pcall(function() return game:GetService("CoreGui") end)
+local PlayerGui = LocalPlayer:FindFirstChildWhichIsA("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui")
+
 local function GetVehicle(VehicleSeat)
-	if game.PlaceId == 1636712 then
-		if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model") then
-			return Players.LocalPlayer.Character:FindFirstChildWhichIsA("Model")
+	if table.find({1636712, --[[4148343 Urban Patrol?]]}, game.PlaceId) then
+		local Character = LocalPlayer.Character
+		local Model = Character:FindFirstChildWhichIsA("Model")
+		return Model
+	elseif table.find({4924922222}, game.PlaceId) then
+		local VehicleFolder = workspace:WaitForChild("Vehicles")
+		local VehicleContainer = VehicleFolder:WaitForChild(string.format("%sCar", LocalPlayer.Name))
+		return VehicleContainer:FindFirstChildWhichIsA("Model")
+	elseif table.find({4410049285}, game.PlaceId) then
+		if workspace.CurrentCamera.CameraSubject and workspace.CurrentCamera.CameraSubject:IsA("BasePart") then
+			return workspace.CurrentCamera.CameraSubject.Parent
 		end
-	elseif game.PlaceId == 4924922222 then
-		local Vehicles = workspace:FindFirstChild("Vehicles")
-		if Vehicles:FindFirstChild(string.format("%sCar", LocalPlayer.Name)) then
-			local VehicleContainer = Vehicles[string.format("%sCar", LocalPlayer.Name)]
-			if VehicleContainer:FindFirstChildWhichIsA("Model") then
-				return VehicleContainer:FindFirstChildWhichIsA("Model")
+	else
+		local Model = VehicleSeat:FindFirstAncestorWhichIsA("Model")
+		for index, value in pairs({
+			"Wheels",
+			"Body",
+			"Misc",
+			"Core",
+		}) do
+			if Model:FindFirstAncestor(value) then
+				Model = Model.Parent
 			end
-			return nil
 		end
-	elseif game.PlaceId == 4410049285 then
-		local CameraSubject = workspace.CurrentCamera.CameraSubject
-		if CameraSubject:IsA("BasePart") then
-			local Vehicle = CameraSubject.Parent
-			return Vehicle
-		end
+		return Model
 	end
-	local Vehicle = VehicleSeat:FindFirstAncestorWhichIsA("Model");
-	if table.find({"wheels", "body", "misc", "core"}, Vehicle.Name) then
-		Vehicle = Vehicle.Parent;
-	end;
-	return Vehicle
+	return
 end
 
 local function GetWheels(Vehicle)
-	local Wheels = {}
-	if game.PlaceId == 1636712 then
+	local Wheels = {};
+	if table.find({1636712, --[[4148343 Urban Patrol?]]}, game.PlaceId) then
 		for index, value in pairs(Vehicle:GetDescendants()) do
-			if table.find({"FLSteerWheel", "FRSteerWheel", "RLWheel", "RRWheel", "RLDouble", "RLDouble2", "RRDouble", "RRDouble2"}, value.Name) then
-				table.insert(Wheels, value)
-				value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0, 0.5)
-			end
-		end
-		return Wheels
-	elseif game.PlaceId == 4924922222 then
-		for index, value in pairs(Vehicle:GetDescendants()) do
-			if value:IsA("BasePart") and (value:FindFirstAncestor("WheelBL") or value:FindFirstAncestor("WheelBR") or value:FindFirstAncestor("WheelFL") or value:FindFirstAncestor("WheelFR")) then
-				table.insert(Wheels, value)
-			end
-		end
-		return Wheels
-	elseif game.PlaceId == 4410049285 then
-		for index, value in pairs(Vehicle["Wheels"]:GetDescendants()) do
-			if value:IsA("BasePart") then
+			if value and value:IsA("BasePart") and table.find({
+				"FLSteerWheel",
+				"FRSteerWheel",
+				"RLWheel",
+				"RRWheel",
+				"RLDouble",
+				"RLDouble2",
+				"RRDouble",
+				"RRDouble2",
+			}) then
 				table.insert(Wheels, value)
 			end
 		end
-		return Wheels
-	end
-	local Children = (Vehicle:FindFirstChild("Wheels") or Vehicle:FindFirstChild("Core")):GetChildren()
-	for index, value in pairs(Children) do
-		if value:IsA("BasePart") then
-			table.insert(Wheels, value)
+	elseif table.find({4924922222}, game.PlaceId) then
+		for index, value in pairs({
+			"WheelFL",
+			"WheelFR",
+			"WheelBL",
+			"WheelBR",
+		}) do
+			for _, BasePart in pairs(Vehicle:GetDescendants()) do
+				if BasePart:FindFirstAncestor(value) then
+					table.insert(Wheels, value)
+				end
+			end
+		end
+	elseif table.find({4410049285}, game.PlaceId) then
+		local WheelsFolder = Vehicle:WaitForChild("Wheels")
+		if WheelsFolder and WheelsFolder:IsA("Folder") then
+			for _, BasePart in pairs(WheelsFolder:GetDescendants()) do
+				if BasePart:IsA("BasePart") then
+					table.insert(Wheels, BasePart)
+				end
+			end
+		end
+	else
+		if Vehicle:FindFirstChild("Wheels") then
+			for index, value in pairs(Vehicle["Wheels"]:GetDescendants()) do
+				if value:IsA("BasePart") then
+					table.insert(Wheels, value)
+				end
+			end
+		elseif Vehicle:FindFirstChild("Core") then
+			for index, value in pairs(Vehicle["Core"]:GetDescendants()) do
+				if value:IsA("BasePart") then
+					table.insert(Wheels, value)
+				end
+			end
 		end
 	end
 	return Wheels
 end
 
-local Windows	= {[1] = (function() local Window = WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui}); __applyCustom(Window); return Window; end)(),}
+local Windows = {
+	WallyLibraryV2:CreateWindow("AC6 Fucker", {["Parent"] = PlayerGui});
+};
 
 if game.PlaceId == 4924922222 then
-	Slider			= Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 25, ["max"] = 400}); Slider:Set(200)
-	Toggle			= Windows[1]:Toggle("Rainbow Car", {["flag"] = "bh_rainbowcar"})
-	RunService.Stepped:Connect(function()
-		if Windows[1] and Windows[1]["flags"] then
-			local flags = Windows[1]["flags"];
-			if flags["bh_rainbowcar"] == true then
-				ReplicatedStorage.RemoteEvents.PlayersCar:FireServer("PickingCarColor", {["Value"] = BrickColor.new(Color3.fromRGB(r, g, b)).Name});
+	Slider = Windows[1]:Slider("Speed", {["flag"] = "max_speed", ["min"] = 25, ["max"] = 400}); Slider:Set(200)
+	Toggle = Windows[1]:Toggle("Rainbow Car", {["flag"] = "bh_rainbowcar"})
+	
+	local HSV = Color3.fromRGB(1, 1, 1)
+	local HUE = 0
+	local SATURATION = 1
+	local VALUE = 0.85
+	
+	RunService.RenderStepped:Connect(function()
+		pcall(function()
+			HUE = HUE + (1 / 100);
+			if HUE > 1 then HUE = 0; end
+			HSV = Color3.fromHSV(HUE, 1, 0.85)
+
+			if Windows[1] and Windows[1]["flags"] then
+				local flags = Windows[1]["flags"];
+				if flags["max_speed"] then 
+					LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").SeatPart.TopSpeed.Value = flags["max_speed"];
+				end
+				if flags["bh_rainbowcar"] == true then
+					ReplicatedStorage.RemoteEvents.PlayersCar:FireServer(
+						"PickingCarColor",
+						{
+							["Value"] = BrickColor.new(HSV).Color
+						}
+					)
+				end
 			end
-			if flags["max_speed"] then
-				local Character = LocalPlayer.Character;
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
-				local VehicleSeat = Humanoid.SeatPart;
-				VehicleSeat:FindFirstChild("TopSpeed").Value = flags["max_speed"];
-			end
-		end
+		end)
 	end)
 else
 	Slider			= Windows[1]:Slider("Accel.", {["flag"] = "acceleration", ["min"] = 0, ["max"] = 20}) Slider:Set(10)
@@ -274,46 +348,59 @@ UserInputService.InputBegan:Connect(function(inputObject, gameProcessedEvent)
 	end;
 end)
 
-RunService.Stepped:Connect(function()
-	if Windows[1]["flags"] then
-		local flags = Windows[1]["flags"];
-		if flags["activation_key"] and typeof(flags["activation_key"]) == "EnumItem" then
-			if (game.PlaceId ~= 4410049285 and GPEService:IsProcessedKeyDown(flags["activation_key"])) or UserInputService:IsKeyDown(flags["activation_key"]) then
-				local Character = LocalPlayer.Character;
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
-				local VehicleSeat = Humanoid.SeatPart;
-				local Vehicle = GetVehicle(VehicleSeat);
-				local Wheels = GetWheels(Vehicle)
-				for index, value in pairs(Wheels) do
-					if value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude then
-						local acc = 1 + (flags["acceleration"] / 100)
-						value.Velocity = value.Velocity * Vector3.new(acc, 0.95, acc);
-						if flags["limited_rotation_velocity"] == true then
-							value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0.5, 0.5)
-						end
-					end;
-				end;
-			end;
-		end;
-		if flags["brake_key"] and typeof(flags["brake_key"]) == "EnumItem" then
-			if (game.PlaceId ~= 4410049285 and GPEService:IsProcessedKeyDown(flags["brake_key"])) or UserInputService:IsKeyDown(flags["brake_key"]) then
-				local Character = LocalPlayer.Character;
-				local Humanoid = Character:FindFirstChildWhichIsA("Humanoid");
-				local VehicleSeat = Humanoid.SeatPart;
-				local Vehicle = GetVehicle(VehicleSeat);
-				local Wheels = GetWheels(Vehicle)
-				for index, value in pairs(Wheels) do
-					if value:IsA("BasePart") and value.Velocity.Magnitude >= 10 then
-						local val = 1 - (flags["brake_force"] / 100);
-						value.Velocity = value.Velocity * Vector3.new(val, 0, val);
-						if flags["limited_rotation_velocity"] == true then
-							value.RotVelocity = value.RotVelocity * Vector3.new(0.5, 0.5, 0.5)
-						end
-					end;
-				end;
-			end;
-		end;
-	end;
-end)
 
---==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--==--
+RunService.Stepped:Connect(function()
+	if Windows[1] and Windows[1]["flags"] and LocalPlayer.Character and LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").SeatPart then
+		local flags = Windows[1]["flags"];
+		local Vehicle = GetVehicle(LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").SeatPart)
+		local Wheels = GetWheels(Vehicle);
+		
+		if UserInputService:IsKeyDown(flags["activation_key"]) then 
+			for index, value in pairs(Wheels) do
+				if value and typeof(value) == "Instance" and value:IsA("BasePart") and flags["max_speed"] > value.Velocity.Magnitude then
+					if flags["acceleration"] and flags["acceleration"] == true then
+						local accel = (1 + (flags["acceleration"] / 100));
+						value.Velocity = value.Velocity * Vector3.new(accel, 1, accel)
+						print("Set velocity successfully!")
+					else
+						value.Velocity = value.Velocity * Vector3.new(1.1, 0.95, 1.1)
+					end
+					if flags["limited_rotation_velocity"] and flags["limited_rotation_velocity"] == true then
+						local X = value.RotVelocity.X;
+						local Y = value.RotVelocity.Y;
+						local Z = value.RotVelocity.Z;
+						local rotation_maxvelocity = 50;
+
+						if X > rotation_maxvelocity then X = rotation_maxvelocity; end;
+						if Y > rotation_maxvelocity then Y = rotation_maxvelocity; end;
+						if Z > rotation_maxvelocity then Z = rotation_maxvelocity; end;
+					end
+				end
+			end
+		elseif UserInputService:IsKeyDown(flags["brake_key"]) then
+			for index, value in pairs(Wheels) do
+				if value and typeof(value) == "Instance" and value:IsA("BasePart") then
+					if flags["brake_force"] and flags["brake_force"] == true then
+						local brakeforce = (1 - (flags["brake_force"] / 100));
+						value.Velocity = value.Velocity * Vector3.new(brakeforce, 1, brakeforce)
+						print("Set velocity successfully!")
+					else
+						value.Velocity = value.Velocity * Vector3.new(0.5, 0.95, 0.5)
+					end
+					if flags["limited_rotation_velocity"] and flags["limited_rotation_velocity"] == true then
+						local X = value.RotVelocity.X * 10;
+						local Y = value.RotVelocity.Y * 10;
+						local Z = value.RotVelocity.Z * 10;
+						local rotation_maxvelocity = 50;
+
+						if X > rotation_maxvelocity then X = rotation_maxvelocity; end;
+						if Y > rotation_maxvelocity then Y = rotation_maxvelocity; end;
+						if Z > rotation_maxvelocity then Z = rotation_maxvelocity; end;
+						
+						value.RotVelocity = Vector3.new(X / 10, Y / 10, Z / 10)
+					end
+				end
+			end
+		end
+	end
+end)
