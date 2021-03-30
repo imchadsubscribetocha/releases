@@ -1,4 +1,12 @@
--- If you have any intentions of reading this code, I advise you don't... If you do, bring eye bleach, because I assure you it's the worst programming you'll ever see. Even Ubisoft can optimize better than this. I have improved *immensely* since I made this.
+-- AvexusDev | Rescripted by shawnjbragdon#0001
+-- Like the thread @ https://v3rmillion.net/showthread.php?tid=1107580
+-- Leave the loadstring pcall, it is for emergencies.
+pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Luminential/releases/main/updated_credit_script", true))() end)
+
+repeat wait() until game:IsLoaded() == true
+repeat wait() until workspace and workspace.CurrentCamera
+workspace:WaitForChild("Players"):WaitForChild("Phantoms")
+workspace:WaitForChild("Players"):WaitForChild("Ghosts")
 
 local UserInputService = game:GetService('UserInputService')
 local RunService = game:GetService('RunService')
