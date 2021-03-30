@@ -1347,34 +1347,36 @@ coroutine.resume(coroutine.create(function()
 	local mousemoverel = getfenv().mousemoverel
 
 	while true do
-		if GameSenseConfiguration.AimBot.Active == true and GameSenseConfiguration.AimBot.Enabled == true then
-			local Nearest = GetNearestCharacter()
-			if Nearest and typeof(Nearest) == "table" and Nearest.Character and Nearest.Character:FindFirstChild("Head") then
-				local HeadPosition = workspace.CurrentCamera:WorldToScreenPoint(Nearest.Character[targetpart].Position + Vector3.new(0, Nearest.Distance / (100 / GameSenseConfiguration.Personalization.DropPredictionIntensity), 0))
-				local PredictedMousePosition = Vector2.new((HeadPosition.X - Mouse.X) * sens, (HeadPosition.Y - Mouse.Y) * sens)
-				pcall(function()
-					aimpos = ScreenGui:FindFirstChild("AimPos") or Instance.new('Frame')
-					if not ScreenGui:FindFirstChild("AimPos") then
-						aimpos.Name = "AimPos"
-						aimpos.BorderSizePixel = 1
-						aimpos.BorderColor3 = Color3.fromRGB(17, 17, 17)
-						aimpos.BackgroundTransparency = 0
-						aimpos.BackgroundColor3 = Color3.fromRGB(248, 248, 248)
-						aimpos.Rotation = 45
-						aimpos.ZIndex = 4
-						aimpos.Size = UDim2.new(0, 3, 0, 3)
-						aimpos.Parent = ScreenGui
-					end
-					aimpos.Position = UDim2.new(0, HeadPosition.X - aimpos.AbsoluteSize.X / 2, 0, HeadPosition.Y - aimpos.AbsoluteSize.Y / 2)
-					aimpos.Visible = true
-				end)
-				mousemoverel(PredictedMousePosition.X, PredictedMousePosition.Y)
-				target = Nearest.Character
-				lockedon = true
+		pcall(function()
+			if GameSenseConfiguration.AimBot.Active == true and GameSenseConfiguration.AimBot.Enabled == true then
+				local Nearest = GetNearestCharacter()
+				if Nearest and typeof(Nearest) == "table" and Nearest.Character and Nearest.Character:FindFirstChild("Head") then
+					local HeadPosition = workspace.CurrentCamera:WorldToScreenPoint(Nearest.Character[targetpart].Position + Vector3.new(0, Nearest.Distance / (100 / GameSenseConfiguration.Personalization.DropPredictionIntensity), 0))
+					local PredictedMousePosition = Vector2.new((HeadPosition.X - Mouse.X) * sens, (HeadPosition.Y - Mouse.Y) * sens)
+					pcall(function()
+						aimpos = ScreenGui:FindFirstChild("AimPos") or Instance.new('Frame')
+						if not ScreenGui:FindFirstChild("AimPos") then
+							aimpos.Name = "AimPos"
+							aimpos.BorderSizePixel = 1
+							aimpos.BorderColor3 = Color3.fromRGB(17, 17, 17)
+							aimpos.BackgroundTransparency = 0
+							aimpos.BackgroundColor3 = Color3.fromRGB(248, 248, 248)
+							aimpos.Rotation = 45
+							aimpos.ZIndex = 4
+							aimpos.Size = UDim2.new(0, 3, 0, 3)
+							aimpos.Parent = ScreenGui
+						end
+						aimpos.Position = UDim2.new(0, HeadPosition.X - aimpos.AbsoluteSize.X / 2, 0, HeadPosition.Y - aimpos.AbsoluteSize.Y / 2)
+						aimpos.Visible = true
+					end)
+					mousemoverel(PredictedMousePosition.X, PredictedMousePosition.Y)
+					target = Nearest.Character
+					lockedon = true
+				end
+			else
+				lockedon = false
 			end
-		else
-			lockedon = false
-		end
+		end)
 
 		RunService.Heartbeat:Wait()
 	end
