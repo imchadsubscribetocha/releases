@@ -5,8 +5,10 @@ pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/Lumi
 
 repeat wait() until game:IsLoaded() == true
 repeat wait() until workspace and workspace.CurrentCamera
-workspace:WaitForChild("Players"):WaitForChild("Phantoms")
-workspace:WaitForChild("Players"):WaitForChild("Ghosts")
+if game.PlaceId == 292439477 then
+	workspace:WaitForChild("Players"):WaitForChild("Phantoms")
+	workspace:WaitForChild("Players"):WaitForChild("Ghosts")
+end
 
 local UserInputService = game:GetService('UserInputService')
 local RunService = game:GetService('RunService')
