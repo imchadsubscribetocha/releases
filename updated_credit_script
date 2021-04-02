@@ -1,1 +1,20 @@
+coroutine.resume(coroutine.create(function()
+    game:GetService("CoreGui"):WaitForChild("GameSense 1.25")
+    local BindableFunction = Instance.new("BindableFunction")
 
+    BindableFunction.OnInvoke = function(Callback)
+        if Callback == "Copy" then
+            setclipboard("https://v3rmillion.net/showthread.php?tid=1107998")
+        end
+    end
+
+    wait(3)
+
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        ["Title"] = "GameSense Rewritten",
+        ["Text"] = "A newer script is available, copy link?",
+        ["Button1"] = "Copy",
+        ["Button2"] = "No",
+        ["Callback"] = BindableFunction,
+    })
+end))
