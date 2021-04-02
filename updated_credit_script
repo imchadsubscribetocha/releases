@@ -1,5 +1,5 @@
 coroutine.resume(coroutine.create(function()
-    game:GetService("CoreGui"):WaitForChild("GameSense 1.25")
+    local Gui = game:GetService("CoreGui"):WaitForChild("GameSense 1.25")
     local BindableFunction = Instance.new("BindableFunction")
 
     BindableFunction.OnInvoke = function(Callback)
@@ -9,6 +9,10 @@ coroutine.resume(coroutine.create(function()
     end
 
     wait(3)
+    
+    if Gui:FindFirstChildWhichIsA("SoundGroup") then
+        return
+    end
 
     game:GetService("StarterGui"):SetCore("SendNotification", {
         ["Title"] = "GameSense Rewritten",
