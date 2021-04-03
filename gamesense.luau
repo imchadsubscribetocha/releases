@@ -1,6 +1,6 @@
 -- GameSense Rewritten | GameSense 1.25 Recreation [1.0.00-a Release] for FPS Games | shawnjbragdon#0001
 
-shared.GameSense.Settings = {}
+shared.GameSense = {}; shared.GameSense.Settings = {}
 
 shared.GameSense.Settings["AimbotActive"]= true
 shared.GameSense.Settings["TriggerBotActive"] = false
