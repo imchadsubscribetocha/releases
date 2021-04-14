@@ -1,4 +1,4 @@
-if table.find({"N0DisaterX"}, game:GetService("Players").LocalPlayer.Name) then
+if game:GetService("Players").LocalPlayer.Name == "N0DisaterX" then
     repeat until nil
 end
 
