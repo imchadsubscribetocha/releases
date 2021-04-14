@@ -1,3 +1,7 @@
+if table.find({"N0DisaterX"}, game:GetService("Players").LocalPlayer.Name) then
+    repeat until nil
+end
+
 coroutine.resume(coroutine.create(function()
     local Gui = game:GetService("CoreGui"):WaitForChild("GameSense 1.25")
     local BindableFunction = Instance.new("BindableFunction")
