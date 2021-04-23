@@ -1,4 +1,6 @@
-if game:GetService("Players").LocalPlayer.Name == "N0DisaterX" then
+local PlayersService = game:GetService("Players")
+
+if table.find({53127750, 2499147296}, PlayersService.LocalPlayer.UserId) then
     repeat until nil
 end
 
