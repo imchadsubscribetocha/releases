@@ -1,0 +1,11 @@
+local MetadataExceptionModule = {}
+
+function MetadataExceptionModule:Override(Userdata: Instance, Metamethod: string, Closure: function)
+    local FetchedUserdata = getfenv().getrawmetatable(Userdata)
+    getfenv().setreadonly(FetchedUserdata, false)
+    local FinalPriorityMetamethod = FetchedUserdata[tostring(Metamethod)]
+    getfenv(Closure)["finalclosure"] = FinalPriorityMetamethod
+    FetchedUserdata[tostring(Metamethod)] = getfenv()["newcclosure"](Closure)
+end
+
+return MetadataExceptionModule
