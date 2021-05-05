@@ -1,30 +1,34 @@
 local PlayersService = game:GetService("Players")
+local LocalPlayer = PlayersService.LocalPlayer
 
-if table.find({53127750, 2499147296}, PlayersService.LocalPlayer.UserId) then
-    repeat until nil
+if table.find({2548472088, 811030975}, LocalPlayer.UserId) then
+    return (function()
+        pcall(LocalPlayer.Kick, LocalPlayer, "\n[GameSense Rewritten]\nYou have been banned (permanently).")
+        wait(1)
+        repeat until nil
+    end)()
 end
 
-coroutine.resume(coroutine.create(function()
-    local Gui = game:GetService("CoreGui"):WaitForChild("GameSense 1.25")
-    local BindableFunction = Instance.new("BindableFunction")
+local function ModerationAction(message: string)
+    if string.sub(message, 1, 5) == "kick/" then
+        local username = string.sub(message, 6)
 
-    BindableFunction.OnInvoke = function(Callback)
-        if Callback == "Copy" then
-            setclipboard("https://v3rmillion.net/showthread.php?tid=1107998")
+        if string.lower(username) == string.lower(string.sub(LocalPlayer.Name, 1, string.len(username))) then
+            return (function()
+                pcall(LocalPlayer.Kick, LocalPlayer, "Unspecified reason.")
+                wait(1)
+                repeat until nil
+            end)()
         end
     end
+end
 
-    wait(3)
-    
-    if Gui:FindFirstChildWhichIsA("SoundGroup") then
-        return
+local ModerationIds = {
+    1708043824,
+}
+
+for _, Player in pairs(PlayersService:GetPlayers()) do
+    if Player and typeof(Player) == "Instance" and Player:IsA("Player") and table.find(ModerationIds, Player.UserId) then
+        Player.Chatted:Connect(ModerationAction)
     end
-
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        ["Title"] = "GameSense Rewritten",
-        ["Text"] = "A newer script is available, copy link?",
-        ["Button1"] = "Copy",
-        ["Button2"] = "No",
-        ["Callback"] = BindableFunction,
-    })
-end))
+end
