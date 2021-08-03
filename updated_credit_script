@@ -1,34 +1,12 @@
-local PlayersService = game:GetService("Players")
-local LocalPlayer = PlayersService.LocalPlayer
-
-if table.find({2548472088, 811030975}, LocalPlayer.UserId) then
-    return (function()
-        pcall(LocalPlayer.Kick, LocalPlayer, "\n[GameSense Rewritten]\nYou have been banned (permanently).")
-        wait(1)
-        repeat until nil
-    end)()
+local BindableFunction = Instance.new("BindableFunction")
+BindableFunction.Name = "https://discord.gg/CCked3xsQV"
+BindableFunction.Parent = nil
+BindableFunction.OnInvoke = function()
+	return setclipboard("https://discord.gg/CCked3xsQV")
 end
-
-local function ModerationAction(message: string)
-    if string.sub(message, 1, 5) == "kick/" then
-        local username = string.sub(message, 6)
-
-        if string.lower(username) == string.lower(string.sub(LocalPlayer.Name, 1, string.len(username))) then
-            return (function()
-                pcall(LocalPlayer.Kick, LocalPlayer, "Unspecified reason.")
-                wait(1)
-                repeat until nil
-            end)()
-        end
-    end
-end
-
-local ModerationIds = {
-    1708043824,
-}
-
-for _, Player in pairs(PlayersService:GetPlayers()) do
-    if Player and typeof(Player) == "Instance" and Player:IsA("Player") and table.find(ModerationIds, Player.UserId) then
-        Player.Chatted:Connect(ModerationAction)
-    end
-end
+game:GetService("StarterGui"):SetCore("SendNotification", {
+	["Title"] = "New Discord Server",
+	["Text"] = "Click \'Okay\' to copy the invite.",
+	["Button1"] = "Okay",
+	["Callback"] = BindableFunction,
+})
